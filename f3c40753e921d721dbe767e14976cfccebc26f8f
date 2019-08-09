@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "72e583cb_07b5e39c",
+        "filename": "extract-files.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1459
+      },
+      "writtenOn": "2019-08-09T06:50:18Z",
+      "side": 1,
+      "message": "You need to adjust this.\nPlus run the patchelf command once in your lib.",
+      "revId": "f3c40753e921d721dbe767e14976cfccebc26f8f",
+      "serverId": "9f904cbb-a964-4fab-a7dc-5cfc4d5c238b",
+      "unresolved": true
+    }
+  ]
+}
