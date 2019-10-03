@@ -1,7 +1,7 @@
 #!/sbin/sh
 #
 # Copyright (C) 2014-2016 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
+# Copyright (C) 2017,2019 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,22 @@
 #
 
 set -e
-
 # Helper functions
 copy()
 {
-  LD_LIBRARY_PATH=/system/lib /system/bin/toybox cp --preserve=a "$1" "$2"
+  toybox cp --preserve=a "$1" "$2"
 }
 
+# Detect where system is mounted
+if [ -d /mnt/system ]; then
+  system_root="/mnt/system/system"
+elif [ -d /system_root ]; then
+  system_root="/system_root/system"
+else
+  system_root="/system/system"
+fi
 # Detect variant and copy its specific-blobs
-modelid=`getprop ro.boot.mid`
+modelid=`getprop | grep ro.boot.mid | sed -r 's/\[|\]//g' | cut -d " " -f2`
 
 case $modelid in
     "0P6B20000") variant="vzw" ;;
@@ -37,20 +44,19 @@ case $modelid in
     "0P6B13000") variant="gsm"; tmo="true" ;;
     *)           variant="gsm" ;;
 esac
-
 # Skip copying blobs in case of Dual SIM variants because the files are already in the proper location
 if [ "$variant" == "vzw" ] || [ "$variant" == "spr" ] || [ "$variant" == "gsm" ]; then
-  basedir="/system/vendor/blobs/$variant/"
+  basedir="$system_root/system/vendor/blobs/$variant/"
   if [ -d $basedir ]; then
     cd $basedir
 
     for file in `find . -type f` ; do
-      mkdir -p `dirname /system/vendor/$file`
-      copy $file /system/vendor/$file
+      mkdir -p `dirname $system_root/system/vendor/$file
+      copy $file $system_root/system/vendor/$file
     done
 
     for file in bin/* ; do
-      chmod 755 /system/vendor/$file
+      chmod 755 $system_root/system/vendor/$file
     done
   else
     echo "Expected source directory does not exist!"
