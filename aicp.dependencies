@@ -1,7 +1,6 @@
 [
   {
     "repository": "AICP/device_htc_msm8974-common",
-    "target_path": "device/htc/msm8974-common",
-    "branch": "q10.0"
+    "target_path": "device/htc/msm8974-common"
   }
 ]
